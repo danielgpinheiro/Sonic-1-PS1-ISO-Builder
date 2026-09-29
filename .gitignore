@@ -3,3 +3,4 @@ __pycache__/
 builder/tools/rsdkmanifest/rsdkmanifest
 builder/tools/rsdkmanifest/*.dSYM
 .DS_Store
+builder/tools/rsdkmanifest/rsdkmanifest-s1
