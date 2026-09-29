@@ -69,7 +69,7 @@ sectors, the file index, and every file against its source.
 - No touch controls, dev menu, settings file or mods from the mobile version.
 - The special stages run below full speed (about 75-80 % in emulators), and Labyrinth Zone with Sonic & Tails a few
   percent below: the PS1 draws every frame instead of skipping some.
-- Tested in emulators only (PCSX-Redux, including boot through a retail NTSC-U BIOS); not yet on a real console.
+- Tested in PCSX-Redux (including boot through a retail NTSC-U BIOS) and on a real PSone from a CD-R.
 
 ## Compromises to make this work
 
@@ -126,8 +126,8 @@ that also boots on retail NTSC-U consoles.
 ## Playing it
 
 - **Emulator:** open `Sonic1-PS1.cue` in PCSX-Redux or DuckStation. Put a memory card in slot 1 to save.
-- **Real hardware:** burn the BIN/CUE at the slowest speed on a CD-R, or copy it to an optical drive emulator. Not yet
-  tested on a console: reports are welcome.
+- **Real hardware:** burn the BIN/CUE at the slowest speed on a CD-R, or copy it to an optical drive emulator. A disc
+  built with the license file runs on a PSone.
 - **Controls:** D-pad to move, Cross / Circle / Square to jump, Start to pause.
 
 ## How it's made
