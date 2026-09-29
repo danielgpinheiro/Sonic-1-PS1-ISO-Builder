@@ -46,7 +46,7 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`e639266275266f0bb194f7cd58bb1dcc33fcf83ccd4a233830fcb10ef90c9965`. Other versions of FFmpeg or psxavenc may encode the
+`b610f1fb271f77935e1be252f22654e2eab3d2b772d4159bcbe5be3ee70c3e33`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 
@@ -67,8 +67,8 @@ sectors, the file index, and every file against its source.
 
 - No online features, achievements or leaderboards.
 - No touch controls, dev menu, settings file or mods from the mobile version.
-- The special stages run below full speed (about 40-50 % in emulators) and Labyrinth Zone slightly below: the PS1
-  draws every frame instead of skipping some.
+- The special stages run below full speed (about 75-80 % in emulators), and Labyrinth Zone with Sonic & Tails about
+  10 % below: the PS1 draws every frame instead of skipping some.
 - Tested in emulators only (PCSX-Redux, including boot through a retail NTSC-U BIOS); not yet on a real console.
 
 ## Compromises to make this work
@@ -140,8 +140,9 @@ conversion tools, each documented in its header, and the part of the decompilati
 
 PS1 edits to the game's scripts (applied at build time by `builder/tools/scripts/patch_bytecode.py`, each checked
 instruction by instruction):
-- The busiest script routines (the players, Tails' AI, rings, the HUD, the stage setup, the special stage's maze
-  blocks and rings) run natively in the executable, with identical results.
+- The busiest script routines (the players, Tails' AI, rings, monitors, springs, the HUD, the stage setup, Labyrinth's
+  doors and invisible blocks, the special stage's maze blocks and rings) run natively in the executable, with identical
+  results.
 - A few loops over the object slots use the PS1's smaller object table.
 - The mobile back key's pause is disabled: Start pauses.
 
