@@ -7196,6 +7196,173 @@ def patch_s1_springs(bcdir):
     return 'PS1S1Spring native: %s' % ', '.join(done)
 
 
+# Labyrinth's LZ Setup update / draw subs (stage object, with their jump-table entries): PS1S1LZSetup 0 / 1.
+LZSETUP_SIGS_S1 = {
+    0: [
+        'Inc OBJECTVALUE0',
+        'IfGreater 0 OBJECTVALUE0 1',
+        'Inc TILELAYERDEFORMATIONOFFSETW[1,0,0]',
+        'Inc TILELAYERDEFORMATIONOFFSETW[1,0,1]',
+        'Equal OBJECTVALUE0 0',
+        'endif',
+        'Inc OBJECTVALUE1',
+        'IfEqual 2 OBJECTVALUE1 3',
+        'Equal OBJECTVALUE1 0',
+        'RotatePalette 0 171 174 0',
+        'RotatePalette 1 171 174 0',
+        'endif',
+        'IfGreater 4 OBJECTVALUE2 0',
+        'Dec OBJECTVALUE2',
+        'else',
+        'Inc OBJECTVALUE3',
+        'Mod OBJECTVALUE3 3',
+        'GetTableValue OBJECTVALUE2 OBJECTVALUE3 52321',
+        'RotatePalette 0 187 189 LOCAL[1,0,52319]',
+        'RotatePalette 1 187 189 LOCAL[1,0,52319]',
+        'endif',
+        'ForEachActive 6 256 ARRAYPOS6',
+        'Equal TEMP1 OBJECTXPOS[1,1,6]',
+        'ShR TEMP1 16',
+        'Equal TEMP2 OBJECTYPOS[1,1,6]',
+        'ShR TEMP2 16',
+        'Add TEMP2 OBJECTCOLLISIONBOTTOM[1,1,6]',
+        'Dec TEMP2',
+        'Get16x16TileInfo TEMP0 TEMP1 TEMP2 0',
+        'CheckEqual TEMP0 71',
+        'Equal TEMP3 CHECKRESULT',
+        'CheckEqual TEMP0 72',
+        'Or TEMP3 CHECKRESULT',
+        'IfEqual 8 TEMP3 1',
+        'CheckEqual OBJECTSTATE[1,1,6] 19',
+        'Equal TEMP3 CHECKRESULT',
+        'CheckEqual OBJECTSTATE[1,1,6] 20',
+        'Or TEMP3 CHECKRESULT',
+        'CheckEqual OBJECTSTATE[1,1,6] 23',
+        'Or TEMP3 CHECKRESULT',
+        'CheckEqual OBJECTSTATE[1,1,6] 24',
+        'Or TEMP3 CHECKRESULT',
+        'IfEqual 10 TEMP3 1',
+        'IfEqual 12 OBJECTSTATE[1,1,6] 19',
+        'FlipSign OBJECTXVEL[1,1,6]',
+        'FlipSign OBJECTSPEED[1,1,6]',
+        'endif',
+        'Equal OBJECTSTATE[1,1,6] 21',
+        'Equal OBJECTANIMATION[1,1,6] GLOBAL[1,0,82]',
+        'endif',
+        'endif',
+        'IfEqual 14 OBJECTGRAVITY[1,1,6] 0',
+        'Get16x16TileInfo TEMP0 TEMP1 TEMP2 8',
+        'IfEqual 16 TEMP0 1',
+        'Equal OBJECTSTATE[1,1,6] 34',
+        'Get16x16TileInfo TEMP0 TEMP1 TEMP2 1',
+        'switch 18 TEMP0',
+        'Equal OBJECTDIRECTION[1,1,6] 1',
+        'break',
+        'Equal OBJECTDIRECTION[1,1,6] 0',
+        'endswitch',
+        'endif',
+        'endif',
+        'next',
+        'IfEqual 26 OBJECTSTATE[1,0,0] 34',
+        'IfEqual 28 OBJECTVALUE4 0',
+        'IfEqual 30 OBJECTVALUE5 0',
+        'PlaySfx 50 0',
+        'StopSfx 51',
+        'Equal OBJECTVALUE5 1',
+        'else',
+        'StopSfx 50',
+        'PlaySfx 51 0',
+        'endif',
+        'endif',
+        'Inc OBJECTVALUE4',
+        'And OBJECTVALUE4 63',
+        'else',
+        'IfNotEqual 32 OBJECTVALUE4 0',
+        'Inc OBJECTVALUE4',
+        'And OBJECTVALUE4 63',
+        'else',
+        'Equal OBJECTVALUE4 0',
+        'Equal OBJECTVALUE5 0',
+        'endif',
+        'endif',
+        'IfGreater 34 LOCAL[1,0,52320] 0',
+        'Dec LOCAL[1,0,52320]',
+        'endif',
+        'End',
+        'JT 1 IfGreater @5 @6',
+        'JT 7 IfEqual @11 @12',
+        'JT 12 IfGreater @15 @21',
+        'JT 21 ForEachActive @21 @64',
+        'JT 33 IfEqual @50 @51',
+        'JT 42 IfEqual @49 @50',
+        'JT 43 IfEqual @46 @47',
+        'JT 51 IfEqual @62 @63',
+        'JT 53 IfEqual @61 @62',
+        'JT 56 switch 0 3 @60 @61 @57 @59 @57 @59',
+        'JT 64 IfEqual @78 @86',
+        'JT 65 IfEqual @74 @75',
+        'JT 66 IfEqual @71 @74',
+        'JT 78 IfNotEqual @82 @85',
+        'JT 86 IfGreater @88 @89',
+    ],
+    1: [
+        'Equal TEMP0 STAGEWATERLEVEL',
+        'Sub TEMP0 SCREENYOFFSET',
+        'IfLower 0 TEMP0 0',
+        'Equal TEMP0 0',
+        'endif',
+        'IfGreater 2 TEMP0 SCREENYSIZE',
+        'Equal TEMP0 SCREENYSIZE',
+        'endif',
+        'SetActivePalette 0 0 TEMP0',
+        'IfGreater 4 LOCAL[1,0,52320] 0',
+        'SetActivePalette 2 TEMP0 SCREENYSIZE',
+        'else',
+        'SetActivePalette 1 TEMP0 SCREENYSIZE',
+        'endif',
+        'End',
+        'JT 2 IfLower @4 @5',
+        'JT 5 IfGreater @7 @8',
+        'JT 9 IfGreater @12 @14',
+    ],
+}
+
+
+def patch_s1_lzsetup(bcdir):
+    """Labyrinth's LZ Setup subs -> PS1S1LZSetup sub / End in every stage file with the object whose subs are exactly
+    LZSETUP_SIGS_S1 (with the jump-table entries)."""
+    sys.path.insert(0, os.path.join(HERE, '..', 'atlas'))
+    import object_sheets
+    names, vars_ = bs.tables(3)
+    fn = [n for n, _ in names]
+    op, end = fn.index('PS1S1LZSetup'), fn.index('End')
+    data = os.path.join(bcdir, '..', 'Data')
+    done = []
+    for f in sorted(os.listdir(bcdir)):
+        folder = f[:-4]
+        if not f.endswith('.bin') or folder == 'GlobalCode' or not os.path.exists(os.path.join(data, 'Stages', folder, 'StageConfig.bin')):
+            continue
+        objs = object_sheets.stage_config(data, folder)[2]
+        if 'LZ Setup' not in objs:
+            continue
+        path = os.path.join(bcdir, f)
+        k = objs.index('LZ Setup')
+        for sub in (0, 1):
+            raw = open(path, 'rb').read()
+            own, p = bs.blocks(raw, 0)
+            rest = raw[p:]
+            full = bs.full_code(path)[0]
+            base = len(full) - len(own)
+            ptr = bs.load(path)[2][k][sub]
+            if full[ptr] == op or sub_listing(path, k, sub, names, vars_)[3] != LZSETUP_SIGS_S1[sub]:
+                continue
+            own[ptr - base:ptr - base + 4] = [op, 2, sub, end]
+            open(path, 'wb').write(encode(own) + rest)
+            assert bs.blocks(open(path, 'rb').read(), 0)[0] == own
+            done.append('%s sub %d' % (folder, sub))
+    return 'PS1S1LZSetup native in %s' % (', '.join(done) or '-')
+
+
 def s1_patches():
     """Sonic 1 (docs/37): its own list. Sonic 2's oscillators and Green Hill's Bridge draw match Sonic 1's scripts word
     for word, the player physics with Sonic 1's numbers (PLAYERFN_SIGS_S1); its own natives are added here as they are
@@ -7212,6 +7379,7 @@ def s1_patches():
             ('ring', lambda d: patch_global_sub(d, 'Ring', 0, RING_SIG_S1, 'PS1Ring')),
             ('monitor', lambda d: patch_global_sub(d, 'Monitor', 0, MONITOR_SIG_S1, 'PS1Monitor', with_jumps=True)),
             ('springs', patch_s1_springs),
+            ('lzsetup', patch_s1_lzsetup),
             ('zoneobjs', patch_s1_zone_objs),
             ('stagesetup', lambda d: patch_global_sub(d, 'Stage Setup', 0, STAGESETUP_SIG_S1, 'PS1StageSetup', with_jumps=True,
                                                       calls=(71, 51))),

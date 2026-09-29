@@ -806,6 +806,7 @@ const FunctionInfo functions[] = {
     FunctionInfo("PS1SSObjUpdate", 1),
     FunctionInfo("PS1S1ZoneObj", 1),
     FunctionInfo("PS1S1Spring", 1),
+    FunctionInfo("PS1S1LZSetup", 1),
 #endif
 #endif
 };
@@ -1369,6 +1370,7 @@ enum ScrFunc {
     FUNC_PS1SSOBJUPDATE,
     FUNC_PS1S1ZONEOBJ,
     FUNC_PS1S1SPRING,
+    FUNC_PS1S1LZSETUP,
 #endif
 #endif
     FUNC_MAX_CNT
@@ -8898,6 +8900,156 @@ static void PS1S1Spring(int yellow)
 }
 #endif
 
+#if PS1_GAME == 1
+// FUNC_GET16X16TILEINFO's body for Sonic 1's natives: `type` of the 16x16 tile at pixel (x, y) of the FG layer; `old` =
+// the output variable's value, kept for a type the VM doesn't handle.
+static int PS1TileInfoS1(int x, int y, int type, int old)
+{
+    int cx = x >> 7, cy = y >> 7;
+    int c  = stageLayouts[0].tiles[cx + (cy << 8)] << 6;
+    c += ((x & 0x7F) >> 4) + 8 * ((y & 0x7F) >> 4);
+    int index = tiles128x128.tileIndex[c];
+    switch (type) {
+        case TILEINFO_INDEX: return tiles128x128.tileIndex[c];
+        case TILEINFO_DIRECTION: return tiles128x128.direction[c];
+        case TILEINFO_VISUALPLANE: return tiles128x128.visualPlane[c];
+        case TILEINFO_SOLIDITYA: return tiles128x128.collisionFlags[0][c];
+        case TILEINFO_SOLIDITYB: return tiles128x128.collisionFlags[1][c];
+        case TILEINFO_FLAGSA: return collisionMasks[0].flags[index];
+        case TILEINFO_ANGLEA: return collisionMasks[0].angles[index];
+        case TILEINFO_FLAGSB: return collisionMasks[1].flags[index];
+        case TILEINFO_ANGLEB: return collisionMasks[1].angles[index];
+        default: return old;
+    }
+}
+
+// Labyrinth's LZ Setup subs (stage object; LZSETUP_SIGS_S1, the operand says which), one statement per instruction:
+// 0 update: the underwater ripple and the two palette cycles (every 3 frames; the waterfall's from its table), then per
+// player (group 256, ARRAYPOS6) the tiles under its feet (71 / 72: the slide; tile angle B 1: the water current, its
+// direction), the current's sounds for player 1 and the countdown in LOCAL[52320]. 1 draw: the palette banks above /
+// below the water line.
+static void PS1S1LZSetup(int sub)
+{
+    int *t = scriptEng.temp, *ap = scriptEng.arrayPosition;
+    int &cr    = scriptEng.checkResult;
+    int *G     = globalVariables;
+    Entity &me = PS1_OBJ(objectEntityPos);
+    if (sub == 1) {
+        t[0] = waterLevel;
+        t[0] -= yScrollOffset;
+        if (t[0] < 0)
+            t[0] = 0;
+        if (t[0] > SCREEN_YSIZE)
+            t[0] = SCREEN_YSIZE;
+        SetActivePalette(0, 0, t[0]);
+        if (scriptCode[52320] > 0)
+            SetActivePalette(2, t[0], SCREEN_YSIZE);
+        else
+            SetActivePalette(1, t[0], SCREEN_YSIZE);
+        return;
+    }
+    me.values[0]++;
+    if (me.values[0] > 1) {
+        stageLayouts[0].deformationOffsetW++;
+        stageLayouts[1].deformationOffsetW++;
+        me.values[0] = 0;
+    }
+    me.values[1]++;
+    if (me.values[1] == 3) {
+        me.values[1] = 0;
+        RotatePalette(0, 171, 174, 0);
+        RotatePalette(1, 171, 174, 0);
+    }
+    if (me.values[2] > 0) {
+        me.values[2]--;
+    }
+    else {
+        me.values[3]++;
+        me.values[3] %= 3; // Mod (divisor 3)
+        int idx = me.values[3]; // GetTableValue OBJECTVALUE2 OBJECTVALUE3 52321
+        if (idx >= 0 && idx < scriptCode[52321])
+            me.values[2] = scriptCode[52321 + idx + 1];
+        RotatePalette(0, 187, 189, scriptCode[52319]);
+        RotatePalette(1, 187, 189, scriptCode[52319]);
+    }
+    TypeGroupList &players = objectTypeGroupList[256];
+    for (int loop = 0; loop < players.listSize; ++loop) {
+        ap[6]     = players.entityRefs[loop];
+        Entity &p = PS1_OBJ(ap[6]);
+        t[1]      = p.xpos;
+        t[1] >>= 16;
+        t[2] = p.ypos;
+        t[2] >>= 16;
+        t[2] += PS1CollisionBottom(p);
+        t[2]--;
+        t[0] = PS1TileInfoS1(t[1], t[2], TILEINFO_INDEX, t[0]);
+        cr   = t[0] == 71;
+        t[3] = cr;
+        cr   = t[0] == 72;
+        t[3] |= cr;
+        if (t[3] == 1) {
+            cr   = p.state == 19;
+            t[3] = cr;
+            cr   = p.state == 20;
+            t[3] |= cr;
+            cr = p.state == 23;
+            t[3] |= cr;
+            cr = p.state == 24;
+            t[3] |= cr;
+            if (t[3] == 1) {
+                if (p.state == 19) {
+                    p.xvel  = -p.xvel;
+                    p.speed = -p.speed;
+                }
+                p.state     = 21;
+                p.animation = G[82];
+            }
+        }
+        if (p.gravity == 0) {
+            t[0] = PS1TileInfoS1(t[1], t[2], TILEINFO_ANGLEB, t[0]);
+            if (t[0] == 1) {
+                p.state = 34;
+                t[0]    = PS1TileInfoS1(t[1], t[2], TILEINFO_DIRECTION, t[0]);
+                switch (t[0]) { // cases 0 / 2 break after their statement, 1 / 3 fall to the end
+                    case 0:
+                    case 2: p.direction = 1; break;
+                    case 1:
+                    case 3: p.direction = 0; break;
+                    default: break;
+                }
+            }
+        }
+    }
+    if (PS1_OBJ(0).state == 34) {
+        if (me.values[4] == 0) {
+            if (me.values[5] == 0) {
+                PlaySfx(50, 0);
+                StopSfx(51);
+                me.values[5] = 1;
+            }
+            else {
+                StopSfx(50);
+                PlaySfx(51, 0);
+            }
+        }
+        me.values[4]++;
+        me.values[4] &= 63;
+    }
+    else {
+        if (me.values[4] != 0) {
+            me.values[4]++;
+            me.values[4] &= 63;
+        }
+        else {
+            me.values[4] = 0;
+            me.values[5] = 0;
+        }
+    }
+    if (scriptCode[52320] > 0)
+        PS1ScriptWrite(52320, scriptCode[52320] - 1);
+}
+#endif
+
 // Sonic 2's Invisible Block (GlobalCode object "Invisible Block"; update 81 VM instructions), natively: one statement
 // per script instruction, in order (the temps keep growing across the player loop, as in the script). Solid (state 0:
 // crushing a player against it long enough runs function 50, the death, in the VM from inside the loop), right wall
@@ -9843,7 +9995,7 @@ static void PS1SpecialRingUpdate()
 static bool PS1S1FastSub(int p)
 {
     int op = PS1_RAW(p);
-    if (op < FUNC_PS1SSROTPOS || op > FUNC_PS1S1SPRING)
+    if (op < FUNC_PS1SSROTPOS || op > FUNC_PS1S1LZSETUP)
         return false;
     int n = s_ps1OpSize[op];
     for (int i = 0; i < n; ++i)
@@ -9863,6 +10015,7 @@ static bool PS1S1FastSub(int p)
         case FUNC_PS1SSOBJUPDATE: PS1SSObjUpdate(scriptEng.operands[0]); break;
         case FUNC_PS1S1ZONEOBJ: PS1S1ZoneObj(scriptEng.operands[0]); break;
         case FUNC_PS1S1SPRING: PS1S1Spring(scriptEng.operands[0]); break;
+        case FUNC_PS1S1LZSETUP: PS1S1LZSetup(scriptEng.operands[0]); break;
         default: return false; // functions' natives (`op return`): never a sub
     }
     scriptText[0] = '\0'; // End
@@ -12312,6 +12465,10 @@ void ProcessScript(int scriptCodeStart, int jumpTableStart, byte scriptEvent)
             case FUNC_PS1S1SPRING: // Sonic 1's Red / Yellow Spring update subs (SPRING_SIGS_S1): which one
                 opcodeSize = 0;
                 PS1S1Spring(scriptEng.operands[0]);
+                break;
+            case FUNC_PS1S1LZSETUP: // Labyrinth's LZ Setup subs (LZSETUP_SIGS_S1): 0 update, 1 draw
+                opcodeSize = 0;
+                PS1S1LZSetup(scriptEng.operands[0]);
                 break;
             case FUNC_PS1TAILSFN61:
                 opcodeSize = 0;
