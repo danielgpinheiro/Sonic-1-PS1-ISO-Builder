@@ -46,12 +46,21 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`8cdd81a578966c2fd9fe55d1fe89b33f95ea732f04324c163c6e728aca43ceb0`. Other versions of FFmpeg or psxavenc may encode the
+`534d93c618514e3bba54839d69016227fe8930703b719cf2cd067027205c448b`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 
 Before writing it, the builder verifies the image byte by byte: sector headers, EDC/ECC of every sector, the license
 sectors, the file index, and every file against its source.
+
+## What's new (October 2026)
+
+- **No more freeze in the special stages:** a pause of more than half a second, when the background animation
+  changed, is gone.
+- **Faster special stages:** in emulators the rotating maze now plays at about 92 % of full speed, up from about 87 %.
+- **Smoother zones:** Green Hill, Labyrinth and Star Light with Sonic & Tails run a little faster.
+- **More free memory** for the game.
+- Nothing looks or plays differently: every change was checked frame by frame against the previous version.
 
 ## What the PS1 version can do
 
@@ -67,8 +76,8 @@ sectors, the file index, and every file against its source.
 
 - No online features, achievements or leaderboards.
 - No touch controls, dev menu, settings file or mods from the mobile version.
-- The special stages run below full speed (about 75-80 % in emulators), and Labyrinth Zone with Sonic & Tails a few
-  percent below: the PS1 draws every frame instead of skipping some.
+- The special stages run slightly below full speed (about 92 % in emulators), and Labyrinth Zone with Sonic & Tails a
+  few percent below: the PS1 draws every frame instead of skipping some.
 - Tested in PCSX-Redux (including boot through a retail NTSC-U BIOS) and on a real PSone from a CD-R.
 
 ## Compromises to make this work
