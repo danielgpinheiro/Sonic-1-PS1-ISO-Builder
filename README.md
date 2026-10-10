@@ -46,7 +46,7 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`51ad6b19e95a24f0c3d806932d406833b27fef43b5d866ea3dc2d6b973d37156`. Other versions of FFmpeg or psxavenc may encode the
+`336b3772786cafb8e432905c60d10d6ce8368408ec15d1e75abf3ea9fc9988fd`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 
@@ -55,6 +55,14 @@ sectors, the file index, and every file against its source.
 
 ## What's new (October 2026)
 
+- **Sonic 3 shields and the insta shield:** the original 2013 release's hidden shield setting is now in Options
+  (Shields: Sonic 1, Sonic 2, Sonic 1 + S3, Sonic 2 + S3) and works with save files. It starts on Sonic 1 + S3: fire,
+  bubble and lightning shields from the monitors, and Sonic's insta shield on a second jump press. Time Attack keeps
+  the classic shields.
+- **The 7th Chaos Emerald:** a new Options setting, Max emeralds 6 / 7 (the 2013 release's hidden one), on by default
+  and kept in save files. It adds the 7th special stage; with all seven emeralds Sonic can turn Super Sonic. The save
+  select shows the 7th emerald.
+- **Every character from the start:** Tails, Knuckles and Sonic & Tails no longer need unlocking.
 - **No more freeze in the special stages:** a pause of more than half a second, when the background animation
   changed, is gone.
 - **Faster special stages:** in emulators the rotating maze now plays at about 92 % of full speed, up from about 87 %.
@@ -63,16 +71,18 @@ sectors, the file index, and every file against its source.
 - **Faster game scripts:** the engine now reads the game's script variables directly instead of looking each one up
   every time, which speeds up every stage a little.
 - **More free memory** for the game.
-- Nothing looks or plays differently: every change was checked frame by frame against the previous version.
+- Apart from the new settings, nothing looks or plays differently: every change was checked frame by frame against
+  the previous version.
 
 ## What the PS1 version can do
 
 - The whole game: every zone including the Final Zone, the rotating special stages, bosses, Time Attack (zones, Final
   Zone, special stages), the ending and credits.
-- All four player choices: Sonic, Tails, Knuckles, Sonic & Tails (Tails and Knuckles unlock as in the 2013 version).
+- All four player choices: Sonic, Tails, Knuckles, Sonic & Tails (all available from the start).
 - Saving on the **memory card in slot 1** (one block): save files, Time Attack records, options. Without a card the game
   plays normally and doesn't save.
-- Options: music and sound effect volume, the spin dash on / off, credits.
+- Options: music and sound effect volume, the spin dash on / off, the shields, the number of emeralds (6 or 7),
+  credits.
 - An animated loading icon while the game reads from the disc (zones load in about 5.5 seconds).
 
 ## What the PS1 version can't do
