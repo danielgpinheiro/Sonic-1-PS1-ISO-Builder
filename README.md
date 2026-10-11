@@ -46,7 +46,7 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`5fb2db6a91c38c685320fd169ccd3c63744e79b9e1940522f2536aff758d8107`. Other versions of FFmpeg or psxavenc may encode the
+`93436b748ba78812cde718eb3d854abb41e87ae6001661fff61b576527ab29e9`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 
@@ -55,6 +55,8 @@ sectors, the file index, and every file against its source.
 
 ## What's new (October 2026)
 
+- **No freeze if the CD drive stops answering:** at a 1-up, the pause menu or a load, the game used to wait for the
+  drive forever; it now asks again after a few seconds and carries on.
 - **Delete a save file:** on the save select, press Select on a used file and confirm "Delete Saved Game?" (as the
   mobile versions' Delete button). The other files, the Time Attack records and the settings stay.
 - **Marble Zone's lava flow** no longer flickers (some of its frames were missing from the video RAM).
