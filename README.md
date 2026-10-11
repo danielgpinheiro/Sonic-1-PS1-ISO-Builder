@@ -46,7 +46,7 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`336b3772786cafb8e432905c60d10d6ce8368408ec15d1e75abf3ea9fc9988fd`. Other versions of FFmpeg or psxavenc may encode the
+`5fb2db6a91c38c685320fd169ccd3c63744e79b9e1940522f2536aff758d8107`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 
@@ -55,6 +55,11 @@ sectors, the file index, and every file against its source.
 
 ## What's new (October 2026)
 
+- **Delete a save file:** on the save select, press Select on a used file and confirm "Delete Saved Game?" (as the
+  mobile versions' Delete button). The other files, the Time Attack records and the settings stay.
+- **Marble Zone's lava flow** no longer flickers (some of its frames were missing from the video RAM).
+- **The credits' last screen** draws the 7th emerald (it was missing when the 7th emerald setting is on).
+- Green Hill's waterfall sounds now play (they were left out of the zone's sound set).
 - **Sonic 3 shields and the insta shield:** the original 2013 release's hidden shield setting is now in Options
   (Shields: Sonic 1, Sonic 2, Sonic 1 + S3, Sonic 2 + S3) and works with save files. It starts on Sonic 1 + S3: fire,
   bubble and lightning shields from the monitors, and Sonic's insta shield on a second jump press. Time Attack keeps
