@@ -3,6 +3,18 @@
 Updates to the Sonic 1 PS1 ISO Builder, newest first. To get an update, rebuild your disc image with the new
 version of the builder (same steps as in the [README](README.md)).
 
+## A little faster, controller port 1 only (October 2026)
+
+- **The zones are a little faster** (up to about 2 % less CPU time a frame): Labyrinth with Sonic & Tails is closer to
+  full speed (1.022 -> 1.012 frames of time a frame), and the special stage gains a little too.
+- **Only controller port 1 is read:** the game uses one controller; port 2 was polled too and, when empty, its time-out
+  was waited out every frame.
+- **Flipped level tiles as mirrored sprites:** where the console's GPU can mirror a sprite (every PSone has such a GPU),
+  flipped tiles are drawn as smaller mirrored sprites instead of reversed quads. A self-test at boot checks it and keeps
+  the previous way elsewhere, including emulators that don't mirror sprites.
+- The game looks and plays the same: each change was checked frame by frame against the previous build.
+- The image's SHA-256 changes (the new value is in the README's Output section).
+
 ## The disc's executable is named after the game (October 2026)
 
 - The disc now boots **`SONIC1.EXE`** instead of `PSX.EXE` (the `BOOT` line of `SYSTEM.CNF`).

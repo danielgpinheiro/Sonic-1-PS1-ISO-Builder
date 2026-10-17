@@ -46,7 +46,7 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`ad3a67263ade3336df9bfd6541830893f9e281a98f81496c8bed7378d610d1e3`. Other versions of FFmpeg or psxavenc may encode the
+`8d1e129475f4b40b965515c293420002c6b49defd57d32f769df878038e7fe3b`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 
@@ -73,8 +73,8 @@ Every update is listed in [CHANGELOG.md](CHANGELOG.md). Latest (October 2026): t
 
 - No online features, achievements or leaderboards.
 - No touch controls, dev menu, settings file or mods from the mobile version.
-- The special stages run slightly below full speed (about 92 % in emulators), and Labyrinth Zone with Sonic & Tails a
-  few percent below: the PS1 draws every frame instead of skipping some.
+- The special stages run slightly below full speed (about 92 % in emulators), and Labyrinth Zone with Sonic & Tails
+  about 1 % below: the PS1 draws every frame instead of skipping some.
 - Tested in PCSX-Redux (including boot through a retail NTSC-U BIOS) and on a real PSone from a CD-R.
 
 ## Compromises to make this work
