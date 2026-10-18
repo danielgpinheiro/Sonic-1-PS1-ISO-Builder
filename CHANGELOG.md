@@ -3,6 +3,17 @@
 Updates to the Sonic 1 PS1 ISO Builder, newest first. To get an update, rebuild your disc image with the new
 version of the builder (same steps as in the [README](README.md)).
 
+## Memory safety fix: the stack has its own area (October 2026)
+
+- **The main stack moved out of the heap** (port issue V4-102): the processor's working data (the stack) now lives in
+  a separate, fixed 8 KB area. Before, nothing kept it apart from the memory the game loads into, so with little
+  memory left a load could be placed on the stack and freeze the game. No such freeze was seen in normal play, but the
+  port's tests produced one in Sonic 2's special stage (same engine) with a few KB less memory.
+- When memory runs out, a request for more now fails cleanly instead of being handed the stack's memory.
+- This uses 8 KB of the console's 2 MB RAM; the deepest the stack was measured to reach is about 4.5 KB (Labyrinth).
+- Checked with the port's automated tests in PCSX-Redux and DuckStation. Not yet tested on a console.
+- The image's SHA-256 changes (the new value is in the README's Output section).
+
 ## A little faster, controller port 1 only (October 2026)
 
 - **The zones are a little faster** (up to about 2 % less CPU time a frame): Labyrinth with Sonic & Tails is closer to
