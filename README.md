@@ -46,7 +46,7 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`3bc4f1aa5b0fae870c1f385bf18b7d063cee046690a10ba947ba21cd6c760d4d`. Other versions of FFmpeg or psxavenc may encode the
+`aa654bd23e56b31490fe6ca40fe2201be1fcebe1ef69c5b3ba837a2598ab675f`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 
@@ -55,8 +55,8 @@ sectors, the file index, and every file against its source.
 
 ## What's new
 
-Every update is listed in [CHANGELOG.md](CHANGELOG.md). Latest (October 2026): rotated sprites no longer bend along their
-diagonal (the special stage's maze, Sonic in loops).
+Every update is listed in [CHANGELOG.md](CHANGELOG.md). Latest (October 2026): the title screen shows the build
+(`V 2E8A04CD`, bottom-left), so you can tell which version you are playing.
 
 ## What the PS1 version can do
 
