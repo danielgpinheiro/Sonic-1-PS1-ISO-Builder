@@ -3,6 +3,22 @@
 Updates to the Sonic 1 PS1 ISO Builder, newest first. To get an update, rebuild your disc image with the new
 version of the builder (same steps as in the [README](README.md)).
 
+## Tester fixes: credits music, coloured emeralds, sprite edges (October 2026)
+
+- **The staff credits keep their music.** After the first credits screen ("Staff Roll") the music stopped for good: the
+  credits load a zone demo between screens, and the disc can only do one thing at a time, so loading the demo stopped
+  the music and nothing started it again (on PC it plays straight through). The music now pauses for each load and
+  carries on from where it was.
+- **The save select's Chaos Emeralds are brighter**, so collected ones (in their colours) are easy to tell from the grey
+  missing ones.
+- **Mirrored player sprites no longer show a stretched column** when the sprite happened to sit at the left edge of a
+  texture page in video memory. The disc builder now keeps the player's sprites off that edge where there is room.
+- A freeze on a black screen after the third credits demo was reported; it did not happen in any of our emulator runs
+  (PCSX-Redux, DuckStation with either CPU mode, with 6 or 7 emeralds). Reports with this version are welcome.
+- The title screen shows the new build, `V 5EA4BF02` (the RSDKv4-ps1 port's commit `5ea4bf0`).
+- Checked with the port's automated tests in PCSX-Redux and DuckStation (new tests for each fix). The image's SHA-256
+  changes (the new value is in the README's Output section).
+
 ## Flip-bit sprites on newer consoles (October 2026)
 
 - **On consoles with the newer GPU (every PSone, most later PlayStations), mirrored sprites drawn at their own size
