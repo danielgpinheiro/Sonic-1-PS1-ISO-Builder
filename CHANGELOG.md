@@ -3,6 +3,16 @@
 Updates to the Sonic 1 PS1 ISO Builder, newest first. To get an update, rebuild your disc image with the new
 version of the builder (same steps as in the [README](README.md)).
 
+## Faster level drawing (October 2026)
+
+- The level renderer is shared with the Sonic 2 port, which was sped up for Sonic 2's busiest places (Hidden Palace's
+  flooded section, Metropolis' giant gears): a layer's tiles are now sent to the GPU in a few large batches instead of
+  one small batch per strip of the screen, and a background whose lines all scroll together is drawn without working
+  out each line. Sonic 1 draws exactly the same pictures as before (checked frame by frame in every zone with the port's
+  automated tests) and spends a little less time doing it.
+- The title screen shows the new build, `V CB40CC8F` (the RSDKv4-ps1 port's commit `cb40cc8`). The image's SHA-256
+  changes (the new value is in the README's Output section).
+
 ## Tester fixes: credits music, coloured emeralds, sprite edges (October 2026)
 
 - **The staff credits keep their music.** After the first credits screen ("Staff Roll") the music stopped for good: the
