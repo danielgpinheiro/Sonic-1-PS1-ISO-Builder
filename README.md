@@ -46,7 +46,7 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`e36ee018d71f4056b546959a3f9d60849a0299b129a230b3c66f45ce679c813c`. Other versions of FFmpeg or psxavenc may encode the
+`8f546e20420d985d0e6382a740e438be6cadccfea510ce7fd24f8a919801f859`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 
@@ -55,9 +55,8 @@ sectors, the file index, and every file against its source.
 
 ## What's new
 
-Every update is listed in [CHANGELOG.md](CHANGELOG.md). Latest (October 2026): mirrored sprites use the GPU's flip
-feature on consoles that have it, as mirrored level tiles already did (checked at start-up; the earliest consoles draw
-as before), build `V 857E6CE9`.
+Every update is listed in [CHANGELOG.md](CHANGELOG.md). Latest (October 2026): the end credits no longer freeze on a
+black screen after the third demo (seen in PCSX-ReARMed), build `V 379BB44F`.
 
 ## What the PS1 version can do
 

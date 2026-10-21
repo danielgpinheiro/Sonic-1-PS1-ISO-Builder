@@ -3,6 +3,20 @@
 Updates to the Sonic 1 PS1 ISO Builder, newest first. To get an update, rebuild your disc image with the new
 version of the builder (same steps as in the [README](README.md)).
 
+## The end credits no longer freeze (October 2026)
+
+- **After the ending, the credits could freeze on a black screen after the third demo** (reported on PCSX-ReARMed).
+  While a level loads, the loading icon keeps animating; at an unlucky moment it tried to copy its picture to video
+  memory while the level was still copying its own graphics there, and two copies at once stop the game. The icon now
+  waits for the level's copy to finish. Checked in PCSX-ReARMed: the credits and all eight demos play through to the
+  title screen, with six and with seven emeralds.
+- The level renderer is shared with the Sonic 2 port, which was sped up again for Sonic 2's Aquatic Ruin: sprites near
+  a water line and background lines that scroll together are drawn with less work. Sonic 1 draws exactly the same
+  pictures as before (checked frame by frame in every zone with the port's automated tests).
+- The title screen shows the new build, `V 379BB44F` (the RSDKv4-ps1 port's commit `379bb44`).
+- Checked with the port's automated tests in PCSX-Redux and DuckStation. The image's SHA-256 changes (the new value is
+  in the README's Output section).
+
 ## Faster level drawing (October 2026)
 
 - The level renderer is shared with the Sonic 2 port, which was sped up for Sonic 2's busiest places (Hidden Palace's
