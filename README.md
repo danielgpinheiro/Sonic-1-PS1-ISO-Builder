@@ -46,7 +46,7 @@ everything is converted **once, on your computer**, into formats the PS1 hardwar
 
 Built from the known `Data.rsdk` **without** a license file and with the tool versions listed under
 [Requirements](#requirements), the image is `Sonic1-PS1.bin` SHA-256
-`8f546e20420d985d0e6382a740e438be6cadccfea510ce7fd24f8a919801f859`. Other versions of FFmpeg or psxavenc may encode the
+`6613d6e867677941a1c07c54284fd249ddd26e91213dabd0b9e23997dd8bb13d`. Other versions of FFmpeg or psxavenc may encode the
 audio slightly differently, which changes the hash but not the game. With a license file the license sectors differ, so
 the hash does too.
 

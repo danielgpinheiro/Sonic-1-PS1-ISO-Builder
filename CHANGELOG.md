@@ -3,6 +3,21 @@
 Updates to the Sonic 1 PS1 ISO Builder, newest first. To get an update, rebuild your disc image with the new
 version of the builder (same steps as in the [README](README.md)).
 
+## Scrap Brain at full speed, whole save-select icons (October 2026)
+
+- **Scrap Brain Zone no longer slows down** on Act 1's upper route (the conveyor belts' platforms) and at the end of
+  Act 2 (where Eggman breaks the bridge): both ran at about half speed. The belts' platforms, the spinning and vanishing
+  platforms and the Caterkiller (also in Marble Zone and Spring Yard) now run as native code instead of through the
+  game's script interpreter, as do about 75 objects across the game that only draw one sprite. They behave and look
+  exactly as before (checked frame by frame against the previous version, including a Caterkiller breaking apart).
+- **The save select shows Tails' and Knuckles' icons whole.** The icons were cut from the menu artwork at the wrong
+  places: Tails lost the right side of his picture and showed a bit of Sonic on the left, Knuckles showed a bit of Tails
+  and sat off-centre. They are now cut where the mobile game draws them, at its size, and Sonic & Tails files show the two
+  of them as on mobile (Sonic in front).
+- The title screen shows the new build, `V B74CCE2B` (the RSDKv4-ps1 port's commit `b74cce2`).
+- Checked with the port's automated tests in PCSX-Redux and DuckStation. The image's SHA-256 changes (the new value is
+  in the README's Output section).
+
 ## The end credits no longer freeze (October 2026)
 
 - **After the ending, the credits could freeze on a black screen after the third demo** (reported on PCSX-ReARMed).
